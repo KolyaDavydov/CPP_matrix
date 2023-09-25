@@ -2,10 +2,16 @@
 
 #include "s21_matrix_oop.h"
 
+
 TEST(move, testleak) {
   S21Matrix matrix1(3, 3);
-  S21Matrix matrix2(5, 5);
+  S21Matrix matrix2(3, 3);
   matrix2 = std::move(matrix1);
+}
+
+TEST(move, testleak1) {
+  S21Matrix matrix1(3, 3);
+  S21Matrix matrix2(std::move(matrix1));
 }
 
 TEST(test_functional, inverese_3x3_3) {

@@ -51,12 +51,14 @@ void S21Matrix::CopyMatrix(const S21Matrix &other) {
 }
 
 // Конструктор перемещения
-S21Matrix::S21Matrix(S21Matrix &&other)
-    : rows_(other.rows_), cols_(other.cols_), matrix_(other.matrix_) {
-  rows_ = std::move(other.rows_);
-  cols_ = std::move(other.cols_);
-  matrix_ = std::move(other.matrix_);
-  other.ClearMatrix();
+S21Matrix::S21Matrix(S21Matrix &&other) {
+  matrix_ = other.matrix_;
+  rows_ = other.rows_;
+  cols_ = other.cols_;
+
+  other.matrix_ = nullptr;
+  other.cols_ = 0;
+  other.rows_ = 0;
 }
 
 // Приватный метод:
@@ -275,8 +277,7 @@ S21Matrix S21Matrix::InverseMatrix() {
   if (fabs(determinant) <= 1.0e-7) {
     throw std::logic_error("Определитель не может быть 0");
   }
-  S21Matrix inversed = CalcComplements();
-  inversed = inversed.Transpose();
+  S21Matrix inversed = CalcComplements().Transpose();
   inversed *= (1.0 / determinant);
   return inversed;
 }
